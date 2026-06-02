@@ -23,9 +23,13 @@ def apply_repetition_penalty(logits, generated_ids, penalty):
     Returns:
       np.ndarray (vocab,) penalized logits.
     """
-    logits = np.asarray(logits, dtype=np.float64)
-    # TODO
-    raise NotImplementedError
+    logits_copy = np.asarray(logits, dtype=np.float64).copy()
+    for id in set(generated_ids):
+        if logits_copy[id] > 0:
+            logits_copy[id] /= penalty
+        else:
+            logits_copy[id] *= penalty
+    return logits_copy
 
 
 # ── tests ─────────────────────────────────────────────────────────────────────
