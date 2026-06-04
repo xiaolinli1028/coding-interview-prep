@@ -10,8 +10,11 @@ Loss for one example = -sum_j t_j * log_softmax(logits)_j .  Return the MEAN
 over the batch. Use a numerically stable log-softmax — do NOT do
 np.log(softmax(...)) (log of tiny probs underflows; see the huge-logit test).
 
-Hint:  log_softmax(x) = x - logsumexp(x),
-       logsumexp(x)  = m + log(sum(exp(x - m))),  m = max(x).
+KEY EQUATIONS
+  soft target:  t_j = (1 - eps) * 1[j == y] + eps / V
+  loss:         L = -sum_j t_j * log_softmax(z)_j
+  stable:       log_softmax(z) = z - logsumexp(z)
+                logsumexp(z)   = m + log(sum(exp(z - m))),  m = max(z)
 """
 
 import numpy as np
@@ -28,6 +31,9 @@ def cross_entropy_label_smoothing(logits, targets, smoothing=0.0):
     """
     logits = np.asarray(logits, dtype=np.float64)
     targets = np.asarray(targets)
+    k = targets.shape[-1]
+    targets_smoothes = (1 - smoothing) * targets + smoothing / k
+    
     # TODO
     raise NotImplementedError
 

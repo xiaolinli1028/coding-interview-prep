@@ -16,6 +16,12 @@ After the pass, the normalizer is l and softmax(x)_i = exp(x_i - m) / l.
 
 Result must equal a standard stable softmax to floating precision, for any
 chunk_size, including with very large values (where naive exp overflows).
+
+KEY EQUATIONS  (streaming over blocks; running max m, denominator l)
+  m' = max(m, max(block))
+  l  = l * exp(m - m') + sum_j exp(x_j - m')
+  m  = m'
+  final:  softmax(x)_i = exp(x_i - m) / l
 """
 
 import numpy as np

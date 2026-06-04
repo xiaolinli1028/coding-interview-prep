@@ -9,6 +9,11 @@ Same spec as the NumPy version, in PyTorch.
 
 Use torch.nn.functional.logsigmoid for stability (NOT torch.log(torch.sigmoid(...))).
 Keep it differentiable — don't detach the policy logps.
+
+KEY EQUATIONS
+  r_w = logp_pi(y_w) - logp_ref(y_w);   r_l = logp_pi(y_l) - logp_ref(y_l)
+  L = -log sigmoid( beta * (r_w - r_l) )       # use F.logsigmoid
+  implicit reward:  r(x,y) = beta * log( pi(y|x) / pi_ref(y|x) ) + const
 """
 
 import torch

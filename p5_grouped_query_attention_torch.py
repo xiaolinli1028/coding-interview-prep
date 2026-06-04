@@ -13,6 +13,11 @@ KV-cache aware: q_seq_len <= kv_seq_len. Query row i has absolute position
 Tools: Tensor.repeat_interleave(rep, dim=0) to expand kv heads, transpose(-2,-1),
 torch.triu for the mask, Tensor.masked_fill, torch.softmax. (Don't just call
 F.scaled_dot_product_attention — implement it.)
+
+KEY EQUATIONS
+  repeat each KV head r = n_head / n_kv times, then standard attention:
+  Attn(Q,K,V) = softmax(Q K^T / sqrt(d_h) + M) V
+  causal M_ij = 0 if j <= i_abs else -inf;   i_abs = kv_len - q_len + i
 """
 
 import math

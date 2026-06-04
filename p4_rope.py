@@ -13,6 +13,13 @@ Rotation of pair (a, b) by angle phi:
 
 `positions[m]` is the absolute position of row m (supports a KV-cache where
 rows don't start at 0).
+
+KEY EQUATIONS                                    (pair i = dims 2i, 2i+1)
+  theta_i = base^(-2i/dim) = base^(-i/half),   half = dim/2   # the two forms are equal
+  phi = pos * theta_i
+  a' = a*cos(phi) - b*sin(phi)
+  b' = a*sin(phi) + b*cos(phi)
+  property: <RoPE(q,m), RoPE(k,n)> depends only on (m - n)    # relative position
 """
 
 import numpy as np
@@ -29,8 +36,15 @@ def apply_rope(x, positions, base=10000.0):
     """
     x = np.asarray(x, dtype=np.float64)
     positions = np.asarray(positions, dtype=np.float64)
-    # TODO
-    raise NotImplementedError
+    half = x.shape[-1] // 2
+    inv_freq = base ** (- np.arange(half) / half)
+    angle = positions[:, None] * inv_freq[None, :]
+    cos, sin = np.cos(angle), np.sin(angle)
+    even, odd = x[:, 0::2], x[:, 1::2]
+    output = np.zeros_like(x)
+    output[:, 0::2] = cos * even - sin * odd
+    output[:, 1::2] = sin * even + cos * odd
+    return output
 
 
 # ── tests ─────────────────────────────────────────────────────────────────────

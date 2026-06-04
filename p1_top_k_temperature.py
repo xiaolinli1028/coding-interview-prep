@@ -12,6 +12,10 @@ Output order must match input order.
 
 Edge cases: k >= len(logits) (keep all); ties at the boundary (keep exactly k,
 breaking ties by index is fine).
+
+KEY EQUATIONS
+  scaled logits:  z_i / T          (T->0 sharpen, T->inf flatten)
+  P_i = exp(z_i/T) / sum_{j in top-k} exp(z_j/T)   for i in top-k, else 0
 """
 
 import numpy as np

@@ -10,6 +10,10 @@ Given dy = dL/dy, return dx = dL/dx:
 
 The test compares your dx against PyTorch autograd, so it must match exactly.
 Operate on a plain tensor (no grad tracking needed inside the function).
+
+KEY EQUATIONS  (means over the feature axis; dxhat = dy * gamma)
+  forward:  xhat = (x - mu)/sqrt(var + eps),   y = gamma*xhat + beta
+  dx = (1/sqrt(var+eps)) * ( dxhat - mean(dxhat) - xhat * mean(dxhat * xhat) )
 """
 
 import torch

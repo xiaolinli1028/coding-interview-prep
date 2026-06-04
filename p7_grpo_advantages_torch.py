@@ -7,6 +7,9 @@ Same spec as the NumPy version, in PyTorch.
 
 Use POPULATION std (unbiased=False, i.e. ddof=0). Constant-reward groups must
 return all zeros (eps guard). Watch out: torch.std defaults to unbiased=True.
+
+KEY EQUATIONS  (per group of K samples)
+  A_i = (r_i - mean(r)) / (std(r) + eps)        # population std (unbiased=False)
 """
 
 import torch

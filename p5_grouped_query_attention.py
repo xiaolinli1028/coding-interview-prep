@@ -10,6 +10,11 @@ absolute position (kv_seq_len - q_seq_len + i) and may attend to key cols
 0 .. that position.
 
   scores = (Q @ K^T) / sqrt(head_dim)   then add causal mask, softmax, @ V.
+
+KEY EQUATIONS
+  repeat each KV head r = n_head / n_kv times, then standard attention:
+  Attn(Q,K,V) = softmax(Q K^T / sqrt(d_h) + M) V
+  causal M_ij = 0 if j <= i_abs else -inf;   i_abs = kv_len - q_len + i
 """
 
 import numpy as np

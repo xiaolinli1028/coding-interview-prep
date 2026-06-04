@@ -9,6 +9,11 @@ t_j = (1-eps)*1[j==y] + eps/V, and the per-example loss is
 You MAY use torch.log_softmax (that's the stable primitive). The test checks
 your result against torch.nn.functional.cross_entropy(..., label_smoothing=eps),
 so it must match PyTorch's own definition.
+
+KEY EQUATIONS
+  soft target:  t_j = (1 - eps) * 1[j == y] + eps / V
+  loss:         L = -sum_j t_j * log_softmax(z)_j
+  use torch.log_softmax (stable); equivalently F.cross_entropy(..., label_smoothing=eps)
 """
 
 import torch

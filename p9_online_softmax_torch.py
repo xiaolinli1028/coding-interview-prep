@@ -8,6 +8,12 @@ chunk_size, maintaining running max m and running denominator l:
     m     = m_new
 Then softmax(x)_i = exp(x_i - m) / l. Must match a standard stable softmax for any
 chunk_size, including very large values.
+
+KEY EQUATIONS  (streaming over blocks; running max m, denominator l)
+  m' = max(m, max(block))
+  l  = l * exp(m - m') + sum_j exp(x_j - m')
+  m  = m'
+  final:  softmax(x)_i = exp(x_i - m) / l
 """
 
 import torch

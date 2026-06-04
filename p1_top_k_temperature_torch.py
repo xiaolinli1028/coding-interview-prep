@@ -10,6 +10,10 @@ code that works on a batch of logits with shape (..., vocab) — NO python loops
 
 PyTorch tools worth reaching for: torch.topk, Tensor.scatter_, torch.softmax,
 torch.full_like. Handle k >= vocab (keep all).
+
+KEY EQUATIONS
+  scaled logits:  z_i / T          (T->0 sharpen, T->inf flatten)
+  P_i = exp(z_i/T) / sum_{j in top-k} exp(z_j/T)   for i in top-k, else 0
 """
 
 import torch

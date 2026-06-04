@@ -10,6 +10,12 @@ positions[m] is the absolute position of row m (KV-cache friendly).
 
 Tools: torch.arange, broadcasting (positions[:,None] * inv_freq[None,:]),
 torch.cos/sin, slicing x[:, 0::2] / x[:, 1::2], torch.empty_like.
+
+KEY EQUATIONS
+  theta_i = base^(-2i/dim),   phi = pos * theta_i      (pair i = dims 2i, 2i+1)
+  a' = a*cos(phi) - b*sin(phi)
+  b' = a*sin(phi) + b*cos(phi)
+  property: <RoPE(q,m), RoPE(k,n)> depends only on (m - n)
 """
 
 import torch

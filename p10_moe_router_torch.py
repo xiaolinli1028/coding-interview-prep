@@ -10,6 +10,10 @@ Return:
 
 torch.topk returns (values, indices) already sorted descending — softmax the
 values over the last dim.
+
+KEY EQUATIONS
+  T = top-k(g)                                  # selected expert set per token
+  w_i = exp(g_i) / sum_{j in T} exp(g_j)        for i in T
 """
 
 import torch

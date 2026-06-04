@@ -9,6 +9,9 @@ and uses the group's own statistics as the baseline:
 
 Compute advantages per group (per row). Use POPULATION std (ddof=0). A degenerate
 group where all rewards are equal must yield all-zero advantages (the eps guard).
+
+KEY EQUATIONS  (per group of K samples)
+  A_i = (r_i - mean(r)) / (std(r) + eps)        # population std (ddof=0)
 """
 
 import numpy as np

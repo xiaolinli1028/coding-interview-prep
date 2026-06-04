@@ -13,6 +13,11 @@ Return the MEAN loss over the batch.
 
 Numerical-stability note: -log sigmoid(z) = softplus(-z) = log(1 + exp(-z)).
 Use np.logaddexp(0, -z) rather than np.log(sigmoid(z)) to avoid overflow.
+
+KEY EQUATIONS
+  r_w = logp_pi(y_w) - logp_ref(y_w);   r_l = logp_pi(y_l) - logp_ref(y_l)
+  L = -log sigmoid( beta * (r_w - r_l) )
+  implicit reward:  r(x,y) = beta * log( pi(y|x) / pi_ref(y|x) ) + const
 """
 
 import numpy as np

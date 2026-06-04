@@ -11,6 +11,10 @@ Return:
   gating_weights: (T, k) float — softmax over the selected k logits, rows sum to 1.
 
 Tip: take top-k along axis=-1, gather those logits, softmax over the k axis.
+
+KEY EQUATIONS
+  T = top-k(g)                                  # selected expert set per token
+  w_i = exp(g_i) / sum_{j in T} exp(g_j)        for i in T
 """
 
 import numpy as np

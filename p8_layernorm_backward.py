@@ -15,6 +15,10 @@ last axis:
     dx = (1/sqrt(var+eps)) * ( dxhat - mean(dxhat) - xhat * mean(dxhat * xhat) )
 
 The test does a finite-difference gradient check, so any correct dx passes.
+
+KEY EQUATIONS  (means over the feature axis; dxhat = dy * gamma)
+  forward:  xhat = (x - mu)/sqrt(var + eps),   y = gamma*xhat + beta
+  dx = (1/sqrt(var+eps)) * ( dxhat - mean(dxhat) - xhat * mean(dxhat * xhat) )
 """
 
 import numpy as np

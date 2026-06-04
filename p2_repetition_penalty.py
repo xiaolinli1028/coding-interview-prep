@@ -9,6 +9,10 @@ token, penalize tokens already in the generated sequence. Per penalized token:
 
 (penalty > 1 pushes any seen token's logit toward / below zero.)
 Return a NEW array; do not mutate the input. Each seen token penalized once.
+
+KEY EQUATIONS  (per already-generated token id, penalty a >= 1)
+  z_i <- z_i / a   if z_i > 0
+  z_i <- z_i * a   if z_i <= 0
 """
 
 import numpy as np

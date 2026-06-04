@@ -10,6 +10,10 @@ Return a NEW tensor (don't mutate input). Vectorize with torch.where over the
 gathered logits — avoid a python loop over token ids.
 
 Tools: torch.tensor(ids), advanced indexing logits[ids], torch.where, .clone().
+
+KEY EQUATIONS  (per already-generated token id, penalty a >= 1)
+  z_i <- z_i / a   if z_i > 0
+  z_i <- z_i * a   if z_i <= 0
 """
 
 import torch
