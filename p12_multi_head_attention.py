@@ -39,8 +39,20 @@ def multi_head_attention(x, w_q, w_k, w_v, w_o, n_head):
       np.ndarray (seq, d_model)
     """
     x = np.asarray(x, dtype=np.float64)
-    # TODO
-    raise NotImplementedError
+    seq, d_model = x.shape
+    hd = d_model // n_head
+    q, k, v = x @ w_q, x @ w_k, x @ w_v
+    split = lambda x: x.reshape(seq, n_head, hd).transpose(1, 0, 2)
+    q, k, v = split(q), split(k), split(v)
+    scores = q @ k.transpose(0, 2, 1) / np.sqrt(hd)
+
+    mask = np.triu(np.ones((seq, seq)), 1)
+    scores = np.where(mask == 1, -np.inf, scores)
+
+    out = softmax(scores) @ v
+    out = out.transpose(1, 0, 2).reshape(seq, -1)
+    return out @ w_o
+    
 
 
 # ── tests ─────────────────────────────────────────────────────────────────────
