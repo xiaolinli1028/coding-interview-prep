@@ -177,3 +177,24 @@ p_\text{res}(i) = \frac{\max(p(i)-q(i),\,0)}{\sum_j \max(p(j)-q(j),\,0)}
 $$
 
 - This exactly preserves sampling from $p$ (unbiased), while drafting cheaply from $q$.
+
+---
+
+## Set 04 — Inference Systems
+
+### p16 — KV-Cache Incremental Decoding
+Per head, at decode step $t$ (append current k/v, attend over the cache):
+
+$$
+K = [\,k_\text{cache}\;\Vert\;k_t\,],\quad V = [\,v_\text{cache}\;\Vert\;v_t\,]
+\qquad(\text{length } t \to t{+}1)
+$$
+$$
+\text{scores} = \frac{q_t K^\top}{\sqrt{d_h}}\;\;(\text{shape } 1\times(t{+}1),\ \textbf{no mask}),
+\qquad
+\text{out}_t = \mathrm{softmax}(\text{scores})\,V
+$$
+
+- **No causal mask needed** — the cache holds only past tokens, so causality is enforced by *what's in the cache*.
+- **Why:** turns each decode step from $O(L^2)$ recompute into $O(L)$; the cache is the $2\,L\,n_\text{layers}\,d_\text{model}$ memory cost that GQA/MLA then attack.
+- Step-by-step cached decode is **identical** to full parallel causal attention (prefill).
