@@ -31,8 +31,15 @@ def nucleus(probs, p):
       original order preserved.
     """
     probs = np.asarray(probs, dtype=np.float64)
-    # TODO
-    raise NotImplementedError
+    sorted_indices = np.argsort(probs)[::-1]
+    sorted_probs = probs[sorted_indices]
+    cum_probs = np.cumsum(sorted_probs)
+    cutoff = np.searchsorted(cum_probs, p, 'left') + 1
+    selected_indices = sorted_indices[:cutoff]
+    out = np.zeros_like(probs)
+    sum_p = np.sum(sorted_probs[:cutoff])
+    out[selected_indices] = probs[selected_indices] / sum_p
+    return out
 
 
 # ── tests ─────────────────────────────────────────────────────────────────────
